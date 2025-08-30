@@ -1,0 +1,9 @@
+[package]
+name = "screenlock"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.99"
+crossterm = "0.29.0"
+rdev = { git='https://github.com/rustdesk-org/rdev', version = "0.5.0-2" }
