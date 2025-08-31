@@ -14,23 +14,24 @@ use crossterm::{
 
 use crate::entity::FullEntity;
 
-// This system doesn't account for inter-entity comm
-// it is considered too complex for our applications
-// even though there may be a performance hit due to rc
-
 pub struct DrawContext {
     pub out: Stdout,
 }
 
-impl Drop for DrawContext {
-    fn drop(&mut self) {
-        cleanup(&mut self.out);
+impl DrawContext {
+    pub fn try_new() -> anyhow::Result<Self> {
+        let mut out = stdout();
+        enable_raw_mode()?;
+        execute!(out, Clear(ClearType::All), MoveTo(0, 0))?;
+        Ok(DrawContext { out })
     }
 }
 
-fn cleanup(out: &mut Stdout) {
-    let _ = disable_raw_mode();
-    let _ = execute!(out, Clear(ClearType::All), MoveTo(0, 0));
+impl Drop for DrawContext {
+    fn drop(&mut self) {
+        let _ = disable_raw_mode();
+        let _ = execute!(self.out, Clear(ClearType::All), MoveTo(0, 0));
+    }
 }
 
 pub struct ControlEvent {
@@ -156,10 +157,7 @@ impl Controller {
     }
 
     pub fn execute(&mut self) -> anyhow::Result<()> {
-        let mut context = DrawContext { out: stdout() };
-
-        enable_raw_mode()?;
-        execute!(context.out, Clear(ClearType::All), MoveTo(0, 0))?;
+        let mut context = DrawContext::try_new()?;
 
         self.work_loop(&mut context)?;
 
