@@ -20,6 +20,7 @@ A playful **screen lock utility** written in Rust. Ideal for quick self-locking 
 - Cannot use the character c in the password (C is a blocked key)
 - Haven't tested special characters in the password
 - All characters are auto converted to lowercase
+- All the limitations listed here: https://github.com/Narsil/rdev
 
 ---
 
@@ -49,6 +50,8 @@ screenlock --for 2m
 ---
 
 ## Installation
+
+Make sure that setup instructions from https://github.com/Narsil/rdev are followed first
 
 Assuming you have Rust installed:
 
