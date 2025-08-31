@@ -37,11 +37,13 @@ const EVENTS_TO_BLOCK: [EventType; 10] = [
     EventType::ButtonPress(Button::Left),
 ];
 
-pub(crate) type Lines = [&'static str; 2];
+pub(crate) type Lines = [&'static str; 4];
 
 const LINES: Lines = [
-    "🔒 This is a simple screen lock demo.",
-    "💖 Send love to: https://github.com/your/repo",
+    "💻 This laptop has been intentionally left unattended.",
+    "🙅 Tampering with it is not appreciated.",
+    "🔒 Screen lock is active: Unlocks on timeout or correct password.",
+    "💖 Send love to: https://github.com/fa993/screenlock",
 ];
 
 pub const COUNTDOWN_Y: u16 = 0;

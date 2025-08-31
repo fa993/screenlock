@@ -1,10 +1,11 @@
-use crossterm::{cursor::MoveTo, execute, style::Print};
-
 use crate::{
     controller::DrawContext,
     entity::{Entity, Named},
     Lines, TITLE_Y,
 };
+use crossterm::QueueableCommand;
+use crossterm::{cursor::MoveTo, style::Print};
+use std::io::Write;
 
 pub struct StaticTextEntity {
     id: String,
@@ -23,13 +24,11 @@ impl StaticTextEntity {
 impl Entity for StaticTextEntity {
     fn draw(&self, draw_context: &mut DrawContext) -> anyhow::Result<()> {
         // Static UI (title + explanation)
-        execute!(
-            draw_context.out,
-            MoveTo(0, TITLE_Y),
-            Print(self.lines[0]),
-            MoveTo(0, TITLE_Y + 1),
-            Print(self.lines[1])
-        )?;
+        for (idx, line) in self.lines.iter().enumerate() {
+            draw_context.out.queue(MoveTo(0, TITLE_Y + idx as u16))?;
+            draw_context.out.queue(Print(line))?;
+        }
+        draw_context.out.flush()?;
         Ok(())
     }
 }

@@ -49,7 +49,7 @@ impl Entity for PasswordPromptEntity {
             Clear(ClearType::CurrentLine),
             MoveTo(0, PROMPT_Y),
             Print(format!("{}{}", self.prompt, "*".repeat(self.password.len())).as_str()),
-            MoveTo(prompt_col + self.password.len() as u16, 4)
+            MoveTo(prompt_col + self.password.len() as u16, PROMPT_Y)
         )?;
         Ok(())
     }
