@@ -58,10 +58,22 @@ cd screenlock
 cargo build --release
 ```
 
-Run the tool from `target/release/`:
+Run the tool:
 
 ```sh
-./screenlock --for 1m
+cargo run --release -- --for 1m
+```
+
+# Install in path
+
+```sh
+cargo install --path .
+```
+
+To run (Assuming .cargo/bin is in your path)
+
+```sh
+screenlock --for 1m
 ```
 
 ---
