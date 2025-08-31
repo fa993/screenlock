@@ -24,7 +24,7 @@ use crate::{
     static_text_entity::StaticTextEntity,
 };
 
-const EVENTS_TO_BLOCK: [EventType; 10] = [
+const EVENTS_TO_BLOCK: [EventType; 13] = [
     EventType::KeyPress(Key::CapsLock),
     EventType::KeyRelease(Key::CapsLock),
     EventType::KeyPress(Key::Tab),
@@ -33,6 +33,9 @@ const EVENTS_TO_BLOCK: [EventType; 10] = [
     EventType::KeyPress(Key::ControlLeft),
     EventType::KeyPress(Key::ControlRight),
     EventType::KeyPress(Key::KeyC),
+    EventType::KeyPress(Key::Escape),
+    EventType::KeyPress(Key::Alt),
+    EventType::KeyPress(Key::AltGr),
     EventType::KeyPress(Key::Escape),
     EventType::ButtonPress(Button::Left),
 ];
