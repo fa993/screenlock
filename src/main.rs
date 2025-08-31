@@ -1,4 +1,10 @@
+pub(crate) mod base_entity;
 pub(crate) mod controller;
+pub(crate) mod count_down_entity;
+pub(crate) mod entity;
+pub(crate) mod feedback_entity;
+pub(crate) mod password_prompt_entity;
+pub(crate) mod static_text_entity;
 
 use std::{
     thread::{self},
@@ -7,9 +13,14 @@ use std::{
 
 use rdev::{grab, Button, Event as REvent, EventType, Key};
 
-use crate::controller::{
-    BaseEntity, Controller, CountDownEntity, FeedbackEntity, Named, PasswordPromptEntity,
-    StaticTextEntity, Visible,
+use crate::{
+    base_entity::BaseEntity,
+    controller::Controller,
+    count_down_entity::CountDownEntity,
+    entity::{Named, Visible},
+    feedback_entity::FeedbackEntity,
+    password_prompt_entity::PasswordPromptEntity,
+    static_text_entity::StaticTextEntity,
 };
 
 const EVENTS_TO_BLOCK: [EventType; 10] = [
@@ -43,8 +54,10 @@ fn capture_control() {
 const PROMPT: &str = "Enter password: ";
 const GITHUB_LINK: &str = "https://github.com/your/repo"; // <-- change this
 fn main() -> anyhow::Result<()> {
-    let correct_password =
+    let mut correct_password =
         std::env::var("LOCK_PASSWORD").unwrap_or_else(|_| "password".to_string());
+
+    correct_password = correct_password.trim().to_lowercase();
 
     let mut controller = Controller::new();
 
