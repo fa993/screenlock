@@ -11,6 +11,7 @@ use std::{
     time::Duration,
 };
 
+use clap::Parser;
 use rdev::{grab, Button, Event as REvent, EventType, Key};
 
 use crate::{
@@ -63,8 +64,36 @@ fn capture_control() {
     }
 }
 
-const PROMPT: &str = "Enter password: ";
+/// Parse strings like "30m", "1h", "20s" into Duration
+fn parse_duration(s: &str) -> Result<Duration, String> {
+    if let Some(stripped) = s.strip_suffix("h") {
+        let hours: u64 = stripped.parse().map_err(|_| "Invalid hours")?;
+        Ok(Duration::from_secs(hours * 3600))
+    } else if let Some(stripped) = s.strip_suffix("m") {
+        let minutes: u64 = stripped.parse().map_err(|_| "Invalid minutes")?;
+        Ok(Duration::from_secs(minutes * 60))
+    } else if let Some(stripped) = s.strip_suffix("s") {
+        let secs: u64 = stripped.parse().map_err(|_| "Invalid seconds")?;
+        Ok(Duration::from_secs(secs))
+    } else {
+        Err("Duration must end with 'h', 'm', or 's'".into())
+    }
+}
+
+/// Command line arguments
+#[derive(Parser, Debug)]
+#[command(author, version, about)]
+struct Args {
+    /// Duration for the timer (e.g. 30m, 1h, 20s)
+    #[arg(long = "for", value_parser = parse_duration)]
+    duration: Option<Duration>,
+}
+
 fn main() -> anyhow::Result<()> {
+    let args = Args::parse();
+
+    let countdown = args.duration.unwrap_or(Duration::from_secs(30));
+
     let mut correct_password =
         std::env::var("LOCK_PASSWORD").unwrap_or_else(|_| "password".to_string());
 
@@ -76,7 +105,7 @@ fn main() -> anyhow::Result<()> {
 
     controller.add_entity(BaseEntity::new(CountDownEntity::new(
         "countdown",
-        Duration::from_secs(30),
+        countdown,
     )));
 
     let mut f_entity = FeedbackEntity::new(
@@ -87,7 +116,7 @@ fn main() -> anyhow::Result<()> {
 
     let p_entity = BaseEntity::new(PasswordPromptEntity::new(
         "password",
-        PROMPT,
+        "Enter password: ",
         correct_password.as_str(),
         f_entity.get_name(),
     ));

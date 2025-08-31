@@ -57,11 +57,21 @@ impl Entity for CountDownEntity {
         } else {
             self.total - elapsed
         };
+
         let secs = remaining.as_secs();
-        let minutes = secs / 60;
-        let seconds = secs % 60;
-        self.print_text = format!("{:02}:{:02}", minutes, seconds);
         let over = remaining.as_secs() <= 0;
+
+        if secs >= 3600 {
+            let hours = secs / 3600;
+            let minutes = (secs % 3600) / 60;
+            let seconds = secs % 60;
+            self.print_text = format!("{:02}:{:02}:{:02}", hours, minutes, seconds);
+        } else {
+            let minutes = secs / 60;
+            let seconds = secs % 60;
+            self.print_text = format!("{:02}:{:02}", minutes, seconds);
+        }
+
         if over {
             UpdateResult::kill()
         } else {
