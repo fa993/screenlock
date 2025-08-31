@@ -7,8 +7,8 @@ A playful **screen lock utility** written in Rust. Ideal for quick self-locking 
 ## Features
 
 - Displays a **countdown timer** at the top-left when active
-- Password is set via the LOCK_PASSWORD env variable (defaults to password)
-- Accepts an optional duration (e.g. `30s`, `5m`, `2h`) to define lock duration; defaults to none
+- Password is set via the LOCK_PASSWORD env variable (defaults to 'password')
+- Accepts an optional duration (e.g. `30s`, `5m`, `2h`) to define lock duration; defaults to 30s
 - Prompts for a **password**, allowing repeated attempts while the timer runs
 - Animated lock UI with emojis and GitHub credits
 - Unlocks on either **timeout** or **correct password**
