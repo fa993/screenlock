@@ -13,6 +13,7 @@ use crossterm::{
 use crate::{
     controller::{DrawContext, UpdateResult},
     entity::{Entity, FullEntity, HasProperties, Named, Visible},
+    FEEDBACK_Y,
 };
 
 pub struct FeedbackEntity {
@@ -65,15 +66,15 @@ impl Entity for FeedbackEntity {
         if !self.is_visible() {
             execute!(
                 draw_context.out,
-                MoveTo(0, 5),
+                MoveTo(0, FEEDBACK_Y),
                 Clear(ClearType::CurrentLine),
             )?;
         } else {
             execute!(
                 draw_context.out,
-                MoveTo(0, 5),
+                MoveTo(0, FEEDBACK_Y),
                 Clear(ClearType::CurrentLine),
-                MoveTo(0, 5),
+                MoveTo(0, FEEDBACK_Y),
                 SetForegroundColor(Color::Red),
                 Print(self.message.as_str()),
                 ResetColor

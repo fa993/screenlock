@@ -9,6 +9,7 @@ use crossterm::{
 use crate::{
     controller::{ControlEvent, DrawContext, EventContext, UpdateResult},
     entity::{Entity, Named},
+    PROMPT_Y,
 };
 
 pub struct PasswordPromptEntity {
@@ -44,9 +45,9 @@ impl Entity for PasswordPromptEntity {
         let prompt_col = self.prompt.len() as u16;
         execute!(
             draw_context.out,
-            MoveTo(0, 4),
+            MoveTo(0, PROMPT_Y),
             Clear(ClearType::CurrentLine),
-            MoveTo(0, 4),
+            MoveTo(0, PROMPT_Y),
             Print(format!("{}{}", self.prompt, "*".repeat(self.password.len())).as_str()),
             MoveTo(prompt_col + self.password.len() as u16, 4)
         )?;

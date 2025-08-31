@@ -36,6 +36,18 @@ const EVENTS_TO_BLOCK: [EventType; 10] = [
     EventType::ButtonPress(Button::Left),
 ];
 
+pub(crate) type Lines = [&'static str; 2];
+
+const LINES: Lines = [
+    "🔒 This is a simple screen lock demo.",
+    "💖 Send love to: https://github.com/your/repo",
+];
+
+pub const COUNTDOWN_Y: u16 = 0;
+pub const TITLE_Y: u16 = COUNTDOWN_Y + 1;
+pub const PROMPT_Y: u16 = TITLE_Y + LINES.len() as u16 + 1; // titles length + 1 line gap
+pub const FEEDBACK_Y: u16 = PROMPT_Y + 1;
+
 fn capture_control() {
     let callback = |event: REvent| -> Option<REvent> {
         if EVENTS_TO_BLOCK.contains(&event.event_type) {
@@ -52,7 +64,6 @@ fn capture_control() {
 }
 
 const PROMPT: &str = "Enter password: ";
-const GITHUB_LINK: &str = "https://github.com/your/repo"; // <-- change this
 fn main() -> anyhow::Result<()> {
     let mut correct_password =
         std::env::var("LOCK_PASSWORD").unwrap_or_else(|_| "password".to_string());
@@ -61,13 +72,7 @@ fn main() -> anyhow::Result<()> {
 
     let mut controller = Controller::new();
 
-    controller.add_entity(BaseEntity::new(StaticTextEntity::new(
-        "title",
-        [
-            format!("🔒 This is a simple screen lock demo."),
-            format!("💖 Send love to: {GITHUB_LINK}"),
-        ],
-    )));
+    controller.add_entity(BaseEntity::new(StaticTextEntity::new("title", LINES)));
 
     controller.add_entity(BaseEntity::new(CountDownEntity::new(
         "countdown",

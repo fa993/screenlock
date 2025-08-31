@@ -10,6 +10,7 @@ use crossterm::{
 use crate::{
     controller::{DrawContext, UpdateResult},
     entity::{Entity, Named},
+    COUNTDOWN_Y,
 };
 
 pub struct CountDownEntity {
@@ -40,7 +41,7 @@ impl Entity for CountDownEntity {
     fn draw(&self, draw_context: &mut DrawContext) -> anyhow::Result<()> {
         execute!(
             draw_context.out,
-            MoveTo(0, 0),
+            MoveTo(0, COUNTDOWN_Y),
             Clear(ClearType::CurrentLine),
             SetForegroundColor(Color::Red),
             Print(&self.print_text),
