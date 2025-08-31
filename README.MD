@@ -7,10 +7,19 @@ A playful **screen lock utility** written in Rust. Ideal for quick self-locking 
 ## Features
 
 - Displays a **countdown timer** at the top-left when active
+- Password is set via the LOCK_PASSWORD env variable (defaults to password)
 - Accepts an optional duration (e.g. `30s`, `5m`, `2h`) to define lock duration; defaults to none
 - Prompts for a **password**, allowing repeated attempts while the timer runs
 - Animated lock UI with emojis and GitHub credits
 - Unlocks on either **timeout** or **correct password**
+
+---
+
+## Caveats
+
+- Cannot use the character c in the password (C is a blocked key)
+- Haven't tested special characters in the password
+- All characters are auto converted to lowercase
 
 ---
 
@@ -33,7 +42,7 @@ screenlock --for 2m
 ```
 💻 This laptop has been intentionally left unattended.
 🙅 Tampering with it is not appreciated.
-🔒 Unlocks on timeout or correct password.
+🔒 Screen lock is active: Unlocks on timeout or correct password.
 🌟 Send your love to this project: https://github.com/fa993/screenlock
 ```
 
