@@ -127,12 +127,11 @@ fn main() -> anyhow::Result<()> {
 
     controller.add_entity(f_entity);
 
-    let handle = thread::spawn(|| {
+    thread::spawn(|| {
         capture_control();
     });
 
     controller.execute()?;
-    drop(handle);
 
     Ok(())
 }
